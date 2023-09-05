@@ -10,6 +10,16 @@ class User extends Authenticatable
 {
     use Notifiable;
 
+    public function user()
+    {
+        return $this->hasMany('App\Post');
+    }
+
+    public function isAdmin()
+    {
+        return $this->role === 'admin_flg'; //ユーザーのロールが 'admin_flg' 1の場合に管理者とみなす
+    }
+
     /**
      * The attributes that are mass assignable.
      *
