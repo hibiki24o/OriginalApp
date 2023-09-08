@@ -5,6 +5,7 @@ namespace App;
 namespace App\Http\Controllers;
 
 use App\Post;
+use App\User;
 use App\Report;
 use App\Comment;
 use Illuminate\Http\Request;
@@ -33,17 +34,41 @@ class PostController extends Controller
         return redirect()->route('home');
     }
 
-    public function index()
+    public function index(Request $request)
     {
+        $latestPosts = Post::latest('created_at')->where('del_flg', 0)->get();
+        // ユーザーリレーションを含む投稿データを取得
+        $posts = Post::with('user')
+            ->where('del_flg', 0)
+            ->get();
+
+
+
+
+        // $keyword = $request->input('keyword');
+        // ユーザー検索
+        // if (!empty($keyword)) {
+        //     $users = User::where('name', 'LIKE', "%{$keyword}%")->get();
+        // }
+
+        // // 投稿文章検索
+        // if (!empty($keyword)) {
+        //     $posts = Post::where('content', 'LIKE', "%{$keyword}%")->get();
+        // }
+        // // 日付検索
+        // if (!empty($request->input('date'))) {
+        //     $posts = Post::where('created_at', 'LIKE', "%{$keyword}%")->get();
+        // }
+
+
         if (Auth::user()->admin_flg == 1) {
             return redirect()->route('admin');
         }
-        $latestPosts = Post::latest('created_at')->get()->where('del_flg', 0);
 
-
-        $posts = Post::with('user')->get()->where('del_flg', 0);
-
-        return view('/home', ['posts' => $posts, 'latestPosts' => $latestPosts]);
+        return view('home', [
+            'posts' => $posts,
+            'latestPosts' => $latestPosts,
+        ]);
     }
 
     public function show($id)

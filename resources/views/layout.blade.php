@@ -8,6 +8,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
   </head>
 
 <body>
@@ -23,13 +25,10 @@
         @if(Auth::check())
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
           <ul class="navbar-nav">
-            <!-- 検索ページへのリンク -->
+
             <li class="nav-item">
               <a class="nav-link" href="{{ route('mypage.edit', ['post' => Auth::user()->id]) }}">{{ Auth::user()->name }}</a>
-            <li class="nav-item">
-              <a class="nav-link" href="">検索</a>
-            </li>
-            <!-- 投稿画面へのリンク -->
+              <!-- 投稿画面へのリンク -->
             <li class="nav-item">
               <a class="nav-link" href="{{ route('create') }}">投稿</a>
             </li>

@@ -14,6 +14,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\SearchController;
 use Monolog\Handler\RotatingFileHandler;
 use Illuminate\Support\Facades\Auth;
 
@@ -37,6 +38,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/admin/edit/{id}', [AdminController::class, 'updateDelFlag'])->name('admin.updateDelFlag');
 
     Route::get('/home', [PostController::class, 'index'])->name('home');
+
 
     Route::get('/create', [PostController::class, 'create'])->name('create');
     Route::post('/create', [PostController::class, 'store']);
