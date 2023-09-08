@@ -73,19 +73,30 @@
 
             <!-- 投稿者名 -->
             <h5 class="card-title">
+
               <a href="{{ route('posts.show', ['id' => $post->id]) }}">
+                @if ($post->user)
                 {{ $post->user->name }}
+                @else
+                @endif
               </a>
+
             </h5>
             <!-- 投稿内容がここに表示されます。 -->
+            @if ($post->content)
             <p class="card-text">{{ $post->content }}</p>
+            @else
+            @endif
             <img src="{{ asset('/storage/'.$post->post_img) }}">
             <!-- コメントが表示されます -->
             <ul class="list-group">
 
             </ul>
             <!-- 投稿時刻 -->
+            @if ($post->created_at )
             <span class="post-time">{{ $post->created_at }}</span>
+            @else
+            @endif
           </div>
         </div>
         @endforeach

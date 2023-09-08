@@ -36,30 +36,33 @@ class PostController extends Controller
 
     public function index(Request $request)
     {
+        $keyword = $request->input('keyword');
         $latestPosts = Post::latest('created_at')->where('del_flg', 0)->get();
-        // ユーザーリレーションを含む投稿データを取得
-        $posts = Post::with('user')
-            ->where('del_flg', 0)
-            ->get();
+
+        $postsQuery = Post::with(['user' => function ($query) {
+            $query->select('id', 'name');
+        }])
+            ->where('del_flg', 0);
+
+        $users = [];
+
+        if (!empty($keyword)) {
+            $users = User::where('name', 'LIKE', "%{$keyword}%")->get();
+            $userIds = $users->pluck('id')->toArray();
+
+            $postsQuery->where(function ($query) use ($keyword, $userIds) {
+                $query->where('content', 'LIKE', "%{$keyword}%")
+                    ->orWhereIn('user_id', $userIds);
+            });
+        }
+
+        $date = $request->input('date');
+        if (!empty($date)) {
+            $postsQuery->whereDate('created_at', '=', $date);
+        }
 
 
-
-
-        // $keyword = $request->input('keyword');
-        // ユーザー検索
-        // if (!empty($keyword)) {
-        //     $users = User::where('name', 'LIKE', "%{$keyword}%")->get();
-        // }
-
-        // // 投稿文章検索
-        // if (!empty($keyword)) {
-        //     $posts = Post::where('content', 'LIKE', "%{$keyword}%")->get();
-        // }
-        // // 日付検索
-        // if (!empty($request->input('date'))) {
-        //     $posts = Post::where('created_at', 'LIKE', "%{$keyword}%")->get();
-        // }
-
+        $posts = $postsQuery->get();
 
         if (Auth::user()->admin_flg == 1) {
             return redirect()->route('admin');
@@ -68,6 +71,7 @@ class PostController extends Controller
         return view('home', [
             'posts' => $posts,
             'latestPosts' => $latestPosts,
+            'users' => $users,
         ]);
     }
 
