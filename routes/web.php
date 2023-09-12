@@ -59,6 +59,10 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('/edit_up/{post}', [AdminController::class, 'postsUpdate'])->name('posts.update');
     Route::get('/edit_up/{post}', [AdminController::class, 'editUpdate'])->name('posts.update');
+    Route::get('/user/edit-icon', [AdminController::class, 'editIcon'])->name('user.editIcon');
+    Route::post('/user/update-icon', [AdminController::class, 'updateIcon'])->name('user.updateIcon');
+    Route::delete('/user/delete', [AdminController::class, 'destroy'])->name('user.destroy');
+
 
     Route::post('/comment/{post}', [PostController::class, 'postsCommentForm'])->name('posts.comment.form');
     Route::get('/comment/{post}', [PostController::class, 'postsComment'])->name('posts.comment');

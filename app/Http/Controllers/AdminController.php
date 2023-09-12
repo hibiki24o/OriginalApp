@@ -102,16 +102,21 @@ class AdminController extends Controller
     }
 
     //編集
-    public function postsUpdate(Post $post)
+    public function postsUpdate(Request $request, Post $post)
     {
-        $columns = ['content', 'post_img'];
+        $post->content = $request->input('content');
 
-        foreach ($columns as $column) {
-            $post->$column = $post->$column;
+        if (isset($request->post_img)) {
+
+            $dir = 'image';
+            $file_name = uniqid() . '.' . $request->file('post_img')->getClientOriginalExtension();
+            $request->file('post_img')->storeAs('public/' . $dir, $file_name);
+            $post->post_img = $dir . '/' . $file_name;
         }
 
         $post->save();
-        return redirect()->route('home');
+
+        return back();
     }
 
     // 削除機能
@@ -119,5 +124,31 @@ class AdminController extends Controller
     {
         $post->delete();
         return redirect()->route('home');
+    }
+
+
+    public function updateIcon(Request $request)
+    {
+
+        $user = Auth::user();
+        if ($request->hasFile('icon_img')) {
+
+            $dir = 'image';
+            $file_name = uniqid() . '.' . $request->file('icon_img')->getClientOriginalExtension();
+            $path = $request->file('icon_img')->storeAs('public/' . $dir, $file_name);
+            $user->icon_img = $dir . '/' . $file_name;
+
+            $user->save();
+        }
+
+        return redirect()->route('home');
+    }
+
+    // ユーザーアカウントの削除
+    public function destroy(Request $request)
+    {
+        $user = Auth::user();
+        $user->delete();
+        return redirect()->route('login');
     }
 }

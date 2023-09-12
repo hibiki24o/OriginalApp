@@ -27,7 +27,19 @@
           <ul class="navbar-nav">
 
             <li class="nav-item">
-              <a class="nav-link" href="{{ route('mypage.edit', ['post' => Auth::user()->id]) }}">{{ Auth::user()->name }}</a>
+              <a class="nav-link" href="{{ route('mypage.edit', ['post' => Auth::user()->id]) }}">
+                @if (Auth::user()->icon_img)
+                <img src="{{ asset('storage/' . Auth::user()->icon_img) }}" alt="ユーザーアイコン" class="user-icon">
+                @endif
+                {{ Auth::user()->name }}
+              </a>
+              <style>
+                /* アイコン画像のスタイル */
+                .user-icon {
+                  width: 40px;
+                  height: 40px;
+                }
+              </style>
               <!-- 投稿画面へのリンク -->
             <li class="nav-item">
               <a class="nav-link" href="{{ route('create') }}">投稿</a>
