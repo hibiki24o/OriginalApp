@@ -16,10 +16,17 @@
           @if ($post->post_img)
           <img src="{{ asset('storage/' . $post->post_img) }}" alt="投稿画像" class="img-fluid">
           @endif
+
           <p class="card-text">投稿時: {{ $post->created_at }}</p>
           <a href="{{ route('report.create',['post' => $post->id]) }}" class="btn btn-sm btn-info">違反報告</a>
           <a href="{{ route('posts.comment', ['post' => $post->id]) }}" class="btn btn-sm btn-secondary">コメント</a>
         </div>
+        <style>
+          .img-fluid {
+            width: 400px;
+            height: auto;
+          }
+        </style>
         <!-- コメント一覧 -->
         <div class="row">
           <div class="col-md-8 offset-md-2 mt-3">

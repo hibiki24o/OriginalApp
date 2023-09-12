@@ -87,7 +87,15 @@
             <p class="card-text">{{ $post->content }}</p>
             @else
             @endif
-            <img src="{{ asset('/storage/'.$post->post_img) }}">
+            @if ($post->post_img)
+            <img src="{{ asset('/storage/'.$post->post_img) }}" class="post_img">
+            <style>
+              .post_img {
+                width: 400px;
+                height: auto;
+              }
+            </style>
+            @endif
             <!-- コメントが表示されます -->
             <ul class="list-group">
 

@@ -48,7 +48,15 @@
               {{ $post->content }}
               <div class="float-right">
                 @if (Auth::check() && Auth::user()->id === $post->user_id)
-                <img src="{{ asset('/storage/'.$post->post_img) }}">
+                @if ($post->post_img)
+                <img src="{{ asset('/storage/'.$post->post_img) }}" class="post_img">
+                @endif
+                <style>
+                  .post_img {
+                    width: 400px;
+                    height: auto;
+                  }
+                </style>
                 <a href="{{ route('posts.update', ['post' => $post->id]) }}" class="btn btn-sm btn-primary">編集</a>
                 <form action="{{ route('mypage.delete', ['post' => $post->id]) }}" method="POST" class="d-inline">
                   @csrf
