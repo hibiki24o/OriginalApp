@@ -10,6 +10,7 @@ use App\Report;
 use App\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class PostController extends Controller
 {
@@ -58,7 +59,7 @@ class PostController extends Controller
 
         $date = $request->input('date');
         if (!empty($date)) {
-            $postsQuery->whereDate('created_at', '=', $date);
+            $postsQuery->where('created_at', '>=', Carbon::parse($request['date'])->startOfDay());
         }
 
 
